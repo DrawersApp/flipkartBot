@@ -21,7 +21,7 @@ public class MatchResult implements Response {
         for (int i = 0; i < productInfoList.length; i++) {
             responseList.add(i, new QAResponse(productInfoList[i].getProductBaseInfoV1().getImageUrls().getUnknown(),
                     productInfoList[i].getProductBaseInfoV1().getTitle(),
-                    productInfoList[i].getProductBaseInfoV1().getTitle(),
+                    productInfoList[i].getProductBaseInfoV1().getProductDescription(),
                     new QAResponse.ActionableItem("Add to Cart", productInfoList[i].getProductBaseInfoV1().getProductUrl(), QAResponse.ActionableItem.ReplyType.WEB),
                     null,
                     null));

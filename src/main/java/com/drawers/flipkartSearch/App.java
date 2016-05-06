@@ -1,7 +1,7 @@
 package com.drawers.flipkartSearch;
 
+import com.drawers.dao.ChatConstant;
 import org.drawers.bot.DrawersClient;
-import org.drawers.bot.dao.MqttChatMessage;
 import org.drawers.bot.dto.DrawersMessage;
 import org.drawers.bot.lib.DrawersBotString;
 import org.drawers.bot.lib.DrawersBotStringHelp;
@@ -40,7 +40,7 @@ public class App extends DrawersClient {
             return new DrawersMessage(
                     message.getSender(),
                     response.toString(),
-                    MqttChatMessage.ChatConstant.ChatType.QAR);
+                    ChatConstant.ChatType.QAR);
         } catch (Exception ex) {
             return new DrawersMessage(message.getSender(), "Something went wrong: " + ex.getLocalizedMessage());
         }
