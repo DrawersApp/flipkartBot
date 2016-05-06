@@ -6,6 +6,7 @@ import org.drawers.bot.dto.DrawersMessage;
 import org.drawers.bot.lib.DrawersBotString;
 import org.drawers.bot.lib.DrawersBotStringHelp;
 import org.drawers.bot.lib.Response;
+import org.drawers.bot.util.SendMail;
 
 /**
  * Initializing the bot.
@@ -21,11 +22,14 @@ public class App extends DrawersClient {
     public static void main(String[] args) throws ClassNotFoundException {
         System.out.println(DrawersBotStringHelp.getDrawersBotStringHelp().toJsonString());
 
-        if(args.length != 2) {
-            System.out.println("Usage: java DictionaryBot <clientId> <password>");
+        if(args.length != 3) {
+            System.out.println("Usage: java DrawersClientCli <clientId> <password> <admin-email-id>");
         } else {
             String clientId = args[0];
             String password = args[1];
+            String adminEmail = args[2];
+            SendMail.getInstance().setAdminEmail(adminEmail);
+            SendMail.getInstance().sendMail("Welcome to Drawers Bot", "Your bot is up and running now.");
             App client = new App(clientId, password);
             client.startBot();
         }

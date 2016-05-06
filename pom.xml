@@ -11,7 +11,7 @@
     <dependency>
       <groupId>com.github.DrawersApp</groupId>
       <artifactId>drawers-java-sdk</artifactId>
-      <version>v1.6</version>
+      <version>v1.7</version>
     </dependency>
     <dependency>
       <groupId>com.squareup.retrofit</groupId>
