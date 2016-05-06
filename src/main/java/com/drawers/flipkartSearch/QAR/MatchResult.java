@@ -1,5 +1,7 @@
 package com.drawers.flipkartSearch.QAR;
 
+import com.drawers.dao.QAResponse;
+import com.drawers.dao.QAResponseContainer;
 import org.drawers.bot.lib.Response;
 
 import java.util.ArrayList;
@@ -22,8 +24,8 @@ public class MatchResult implements Response {
             responseList.add(i, new QAResponse(productInfoList[i].getProductBaseInfoV1().getImageUrls().getUnknown(),
                     productInfoList[i].getProductBaseInfoV1().getTitle(),
                     productInfoList[i].getProductBaseInfoV1().getProductDescription(),
-                    new QAResponse.ActionableItem("Add to Cart", productInfoList[i].getProductBaseInfoV1().getProductUrl(), QAResponse.ActionableItem.ReplyType.WEB),
-                    null,
+                    new QAResponse.ActionableItem("Add to Cart", productInfoList[i].getProductBaseInfoV1().getProductUrl(), QAResponse.ReplyType.WEB),
+                    new QAResponse.ActionableItem(productInfoList[i].getProductBaseInfoV1().getFlipkartSellingPrice().getDisplayPrice(), null, QAResponse.ReplyType.NA),
                     null));
         }
         QAResponseContainer container = new QAResponseContainer(responseList, null);
@@ -59,6 +61,10 @@ public class MatchResult implements Response {
             private ImageUrls imageUrls;
             private String productUrl;
 
+            public FlipkartPrice getFlipkartSellingPrice() {
+                return flipkartSellingPrice;
+            }
+
             public String getProductUrl() {
                 return productUrl;
             }
@@ -87,6 +93,10 @@ public class MatchResult implements Response {
             private class FlipkartPrice {
                 Float amount;
                 String currency;
+
+                public String getDisplayPrice() {
+                    return amount + " " + currency;
+                }
 
                 @Override
                 public String toString() {

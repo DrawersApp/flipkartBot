@@ -17,7 +17,7 @@ public class FlipkartSearch implements Operation {
 
     @Override
     public Response operateInternal(DrawersBotString drawersBotString) {
-        return flipkart.search(searchKey, 5);
+        return flipkart.search(searchKey, 10);
     }
 
     private String searchKey;
