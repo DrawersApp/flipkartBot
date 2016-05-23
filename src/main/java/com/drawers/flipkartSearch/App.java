@@ -17,8 +17,6 @@ public class App extends DrawersClient {
         super(clientId, password);
     }
 
-    static private FlipkartSearch flipkartSearch = new FlipkartSearch();
-
     public static void main(String[] args) throws ClassNotFoundException {
         System.out.println(DrawersBotStringHelp.getDrawersBotStringHelp().toJsonString());
 
@@ -39,8 +37,7 @@ public class App extends DrawersClient {
     public DrawersMessage processMessageAndReply(DrawersMessage message) {
         try {
             DrawersBotString drawersBotString = DrawersBotString.fromString(message.getMessage());
-            Response response = flipkartSearch.operate(drawersBotString);
-            System.out.println(response);
+            Response response = (new FlipkartSearch()).operate(drawersBotString);
             return new DrawersMessage(
                     message.getSender(),
                     response.toString(),
