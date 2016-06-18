@@ -1,23 +1,29 @@
 package com.drawers.flipkartSearch;
 
-import com.drawers.dao.ChatConstant;
-import org.drawers.bot.DrawersClient;
-import org.drawers.bot.dto.DrawersMessage;
-import org.drawers.bot.lib.DrawersBotString;
+import com.drawers.dao.packets.MqttProviderManager;
 import org.drawers.bot.lib.DrawersBotStringHelp;
-import org.drawers.bot.lib.Response;
+import org.drawers.bot.listener.DrawersMessageListener;
+import org.drawers.bot.mqtt.DrawersBot;
 import org.drawers.bot.util.SendMail;
 
 /**
  * Initializing the bot.
  */
-public class App extends DrawersClient {
+public class App implements DrawersMessageListener {
+
+    private static DrawersBot bot;
+    private static App client;
+    private static MqttProviderManager mqttProviderManager;
+    private String clientId;
+
 
     public App(String clientId, String password) {
-        super(clientId, password);
+        bot = new DrawersBot(clientId, password, this);
+        mqttProviderManager = MqttProviderManager.getInstanceFor(bot);
+        mqttProviderManager.setClientIdAndName(clientId, "Dictionary");
     }
 
-    public static void main(String[] args) throws ClassNotFoundException {
+    public static void main(String[] args) throws ClassNotFoundException, InterruptedException {
         System.out.println(DrawersBotStringHelp.getDrawersBotStringHelp().toJsonString());
 
         if(args.length != 3) {
@@ -28,22 +34,26 @@ public class App extends DrawersClient {
             String adminEmail = args[2];
             SendMail.getInstance().setAdminEmail(adminEmail);
             SendMail.getInstance().sendMail("Welcome to Drawers Bot", "Your bot is up and running now.");
-            App client = new App(clientId, password);
+            client = new App(clientId, password);
+            client.clientId = clientId;
             client.startBot();
         }
     }
 
-    @Override
-    public DrawersMessage processMessageAndReply(DrawersMessage message) {
-        try {
-            DrawersBotString drawersBotString = DrawersBotString.fromString(message.getMessage());
-            Response response = (new FlipkartSearch()).operate(drawersBotString);
-            return new DrawersMessage(
-                    message.getSender(),
-                    response.toString(),
-                    ChatConstant.ChatType.QAR);
-        } catch (Exception ex) {
-            return new DrawersMessage(message.getSender(), "Something went wrong: " + ex.getLocalizedMessage());
+    protected void startBot() throws InterruptedException {
+        FlipkartMessageListener flipkartMessageListener = new FlipkartMessageListener(bot, clientId);
+        mqttProviderManager.addMessageListener(flipkartMessageListener);
+        mqttProviderManager.addGroupMessageListener(flipkartMessageListener);
+        bot.start();
+        while (true) {
+            Thread.sleep(10000000000000000L);
         }
+
+    }
+
+
+    @Override
+    public void onConnected() {
+
     }
 }

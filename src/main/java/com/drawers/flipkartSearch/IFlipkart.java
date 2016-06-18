@@ -11,7 +11,8 @@ import retrofit.http.Query;
 public interface IFlipkart {
     @Headers({
             "Accept: application/json",
-            "Fk-Affiliate-Id: nishantpa8"
+            "Fk-Affiliate-Id: nishantpa8",
+            "Fk-Affiliate-Token: b3f65c885e7b4c499706a6dc53a75998"
     })
     @GET("/affiliate/1.0/search.json")
     MatchResult search(@Query("query") String query, @Query("resultCount") Integer count);

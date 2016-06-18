@@ -43,7 +43,6 @@ public class FlipkartSearch implements Operation {
     static {
         RestAdapter restAdapter = new RestAdapter.Builder()
                 .setEndpoint("https://affiliate-api.flipkart.net")
-                .setLogLevel(RestAdapter.LogLevel.FULL)
                 .build();
         flipkart = restAdapter.create(IFlipkart.class);
         botStringElements.add(new BotStringElement(BotStringType.U, "Find"));
